@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import Annotated
 import pickle
@@ -12,6 +13,13 @@ vectorizer = model_bundle["vectorizer"]
 log_model = model_bundle["log_model"]
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],            # change "*" to your actual frontend URL in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class NewsItem(BaseModel):
     text: Annotated[str, Field(..., description="Enter the news text")]
